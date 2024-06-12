@@ -7,10 +7,10 @@ spec:
   selector:
     service: coworking
   ports:
-  - name: "5153"
-    protocol: TCP
-    port: 5153
-    targetPort: 5153
+    - name: "5153"
+      protocol: TCP
+      port: 5153
+      targetPort: 5153
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -29,28 +29,28 @@ spec:
         service: coworking
     spec:
       containers:
-      - name: coworking
-        image: 122643139453.dkr.ecr.us-east-1.amazonaws.com/duylk:1.0.2
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          httpGet:
-            path: /health_check
-            port: 5153
-          initialDelaySeconds: 5
-          timeoutSeconds: 2
-        readinessProbe:
-          httpGet:
-            path: "/readiness_check"
-            port: 5153
-          initialDelaySeconds: 5
-          timeoutSeconds: 5
-        envFrom:
-        - configMapRef:
-            name: project3-configmap
-        env:
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: project3-secret
-              key: DB_PASSWORD
+        - name: coworking
+          image: 178422007520.dkr.ecr.us-east-1.amazonaws.com/coworking:1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /health_check
+              port: 5153
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              path: "/readiness_check"
+              port: 5153
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: project3-configmap
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: project3-secret
+                  key: DB_PASSWORD
       restartPolicy: Always
